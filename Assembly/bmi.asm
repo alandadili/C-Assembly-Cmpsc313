@@ -19,7 +19,7 @@ main:
     syscall
 
     # Print weight value (float)
-    li $v0, 2
+    li $v0, 2       
     l.s $f12, weight
     syscall
 
