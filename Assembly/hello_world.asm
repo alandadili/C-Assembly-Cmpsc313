@@ -1,7 +1,7 @@
 .text
 
     # declare the main function
-    .globl main
+.globl main
 main:
 
     # printf("Hello, World!\n");
