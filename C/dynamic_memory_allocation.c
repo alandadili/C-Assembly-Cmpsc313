@@ -4,25 +4,25 @@
 
 int main(void) {
 
-    // make an int (on the stack)
-    int p1 = 42;
+    // arrays   (static allocation)
+    // int data[5] = {1, 2, 3, 4, 5};
 
-    //  print the int
-    printf("p1: %d\n", p1);
+    //  arrays (dynamic allocation)
+    int n = 5;
+    int *data = (int *)malloc(n * sizeof(int));
 
-    //
-    //  dynamic memory allocation
-    // int *p1Ptr = malloc(sizeof(int)); // allocate memory for an int on the heap
-    int *p1Ptr = malloc(4); // 4 bytes for an int
+    // populate the array
+    for (int i = 0; i < n; i++) {
+        data[i] = (i + 1) * 10;
+    }
 
-    //  set the int
-    *p1Ptr = 43;
+    //  print the array
+    for (int i = 0; i < n; i++) {
+        printf("data[%d] = %d\n", i, data[i]);
+    }
 
-    //  print the int
-    printf("p1Ptr: %d\n", *p1Ptr);
-
-    //  clean up memory
-    free(p1Ptr);
+    // free the allocated memory
+    free(data);
 
     return 0;
 }
