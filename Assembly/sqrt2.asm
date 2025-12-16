@@ -8,60 +8,72 @@
 .globl main
 
 main:
-    # Print prompt
+    
     li $v0, 4
     la $a0, prompt
     syscall
     
-    # Read integer from user
+   
     li $v0, 5
     syscall
-    move $t0, $v0          # Store input in $t0
+    move $t0, $v0         
     
-    # Check if number is negative
-    bltz $t0, error_handler
     
-    # Valid number - calculate square root
-    mtc1 $t0, $f0          # Move integer to FP register
-    cvt.s.w $f0, $f0       # Convert to float
-    sqrt.s $f12, $f0       # Calculate square root
+    bltz $t0, throw_invalid_exception
     
-    # Print the square root
-    li $v0, 2              # Print float syscall
+   
+    mtc1 $t0, $f0          
+    cvt.s.w $f0, $f0       
+    sqrt.s $f12, $f0       
+    
+    
+    li $v0, 2              
     syscall
     
-    # Print newline
+    
     li $v0, 4
     la $a0, newline
     syscall
     
-    # Jump to exit
-    j exit_program
-
-error_handler:
-    # Print "Invalid Number"
-    li $v0, 4
-    la $a0, invalid
-    syscall
     
-    # Print newline
-    li $v0, 4
-    la $a0, newline
-    syscall
-    
-    # Fall through to exit
+    j finally_block
 
-exit_program:
-    # Print "Goodbye"
+throw_invalid_exception:
+    
+    li $v0, 17             
+    li $a0, 1              
+    syscall
+
+finally_block:
+    
     li $v0, 4
     la $a0, goodbye
     syscall
     
-    # Print newline
+    
     li $v0, 4
     la $a0, newline
     syscall
     
-    # Exit program
+   
     li $v0, 10
     syscall
+
+
+.ktext 0x80000180
+    
+    li $v0, 4
+    la $a0, invalid
+    syscall
+    
+    
+    li $v0, 4
+    la $a0, newline
+    syscall
+    
+    
+    la $k0, finally_block
+    
+    
+    mtc0 $k0, $14          
+    eret                    
